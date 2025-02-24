@@ -1,0 +1,77 @@
+# Ignore bundler config
+/.bundle
+/vendor/bundle
+
+# Ignore the default SQLite database
+/db/*.sqlite3
+/db/*.sqlite3-*
+
+# Ignore all logfiles and tempfiles
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore storage uploads
+/storage/*
+!/storage/.keep
+
+# Ignore environment files
+.env
+.env.local
+.env.*.local
+
+# Ignore node_modules
+/node_modules
+
+# Ignore public assets
+/public/assets
+/public/packs
+/public/packs-test
+
+# Ignore yarn files
+/yarn-error.log
+.yarn/cache
+.yarn/install-state.gz
+.yarn/unplugged
+
+# Ignore IDE-specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore Spring files
+/spring/*.pid
+
+# Ignore test coverage
+/coverage/
+
+# Ignore Rails master key
+/config/master.key
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore npm debug logs
+npm-debug.log*
+
+# Ignore Ruby version manager files
+.ruby-version
+.ruby-gemset
+
+# Ignore Rails credentials
+/config/credentials/*.key
+/config/credentials/*.yml
+
+# Ignore precompiled assets
+/public/assets
+/public/packs
+/public/packs-test
+
+# Ignore cache
+.sass-cache/
+.byebug_history
+
+# Ignore local development files
+*.local
