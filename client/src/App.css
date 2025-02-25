@@ -23,6 +23,11 @@
   color: white;
 }
 
+.duration-field {
+  width: 12%;
+  margin: 0 10px
+}
+
 .App-link {
   color: #61dafb;
 }
