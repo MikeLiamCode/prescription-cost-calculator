@@ -10,3 +10,14 @@ export async function getMedicines() {
 	}
 	return [];
 }
+
+export async function calculateCost(selectedMedicines, budget) {
+	try {
+		const res = await axios.post('calculate_cost', {medication: selectedMedicines, budget: budget});
+		return res.data;
+	}
+	catch(error) {
+		console.error('There was an error fetching the cost', error);
+	}
+	return [];
+}

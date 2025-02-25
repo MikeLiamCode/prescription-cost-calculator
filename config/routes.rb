@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :medications, only: %i[index]
+  post '/calculate_cost', to: 'medications#calculate_cost', as: 'calculate_cost'
 end
