@@ -1,27 +1,19 @@
 class CostCalculatorService
+  DISCOUNT_THRESHOLD = 30
+  DISCOUNT_RATE = 0.9
+
   def initialize(medications_params, budget)
     @medications_params = medications_params
     @budget = budget.to_f
     @total_cost = 0
     @medication_costs = []
+    @discount_needed = false
   end
 
   def calculate
     process_medications
-    generate_suggestion if @total_cost > @budget
-    {
-      is_discounted: @discount_needed,
-      total_cost: @total_cost.to_f.round(2),
-      is_valid: @total_cost <= @budget,
-      medicine_details: @medication_costs.map do |medication|
-        {
-          name: medication[:medication],
-          unit_price: medication[:unit_price],
-          quantity: medication[:quantity]
-        }
-      end,
-      suggestion: @suggestion
-    }
+    generate_suggestion if over_budget?
+    build_response
   end
 
   private
@@ -32,24 +24,58 @@ class CostCalculatorService
       dosage = Dosage.find_by(id: details[:dosageId])
       next unless medication && dosage
 
-      quantity = dosage.frequency_multiplier * details[:duration].to_i
-      cost = medication.unit_price * quantity
-      @discount_needed = details[:duration].to_i >= 30
-      cost *= 0.9 if @discount_needed
+      quantity = calculate_quantity(dosage, details[:duration])
+      cost = calculate_cost(medication.unit_price, quantity, details[:duration])
+
       @total_cost += cost
-      @medication_costs << {
-        medication: medication.name,
-        dosage: dosage.dosage_amount,
-        cost: cost,
-        quantity: quantity,
-        unit_price: medication.unit_price
-      }
+      @medication_costs << build_medication_details(medication, dosage, quantity, cost)
     end
   end
 
+  def calculate_quantity(dosage, duration)
+    dosage.frequency_multiplier * duration.to_i
+  end
+
+  def calculate_cost(unit_price, quantity, duration)
+    cost = unit_price * quantity
+    apply_discount(cost, duration)
+  end
+
+  def apply_discount(cost, duration)
+    if duration.to_i >= DISCOUNT_THRESHOLD
+      @discount_needed = true
+      cost * DISCOUNT_RATE
+    else
+      cost
+    end
+  end
+
+  def build_medication_details(medication, dosage, quantity, cost)
+    {
+      name: medication.name,
+      dosage: dosage.dosage_amount,
+      cost: cost,
+      quantity: quantity,
+      unit_price: medication.unit_price
+    }
+  end
+
   def generate_suggestion
-    @medication_costs.sort_by! { |m| -m[:cost] }
-    high_cost_med = @medication_costs.first
-    @suggestion = "Consider reducing the duration of #{high_cost_med[:medication]} (#{high_cost_med[:dosage]}) to stay within budget."
+    highest_cost_med = @medication_costs.max_by { |m| m[:cost] }
+    @suggestion = "Consider reducing the duration of #{highest_cost_med[:medication]} (#{highest_cost_med[:dosage]}) to stay within budget."
+  end
+
+  def over_budget?
+    @total_cost > @budget
+  end
+
+  def build_response
+    {
+      is_discounted: @discount_needed,
+      total_cost: @total_cost.round(2),
+      is_valid: !over_budget?,
+      medicine_details: @medication_costs.map { |m| m.slice(:name, :unit_price, :quantity) },
+      suggestion: @suggestion
+    }
   end
 end
