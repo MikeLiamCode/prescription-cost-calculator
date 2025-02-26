@@ -27,19 +27,11 @@ Collects the following information:
   - Validation result (valid/invalid)
   - Suggested adjustments (if needed)
 
-## Project Structure
-```
-- src/components: Contains reusable React components.
-- src/containers: Contains container components like PrescriptionForm and CostSummary.
-- src/utils: Contains utility functions, including cost calculation logic.
-- src/tests: Contains RSpec tests for backend logic.
-```
-
 ## Technology Stack
-- **Backend:** Ruby on Rails 8
+- **Backend:** Rails 8.0.1
 - **Frontend:** React
 - **Database:** PostgreSQL
-- **Testing:** RSpec (Rails backend only, no React test cases)
+- **Testing:** RSpec 
 
 ## Setup Instructions
 ### Clone the Repository:
@@ -81,18 +73,6 @@ npm start
 ```sh
 bundle exec rspec
 ```
-
-## Deployment Instructions
-### Render (Backend):
-1. Push code to Render:
-   ```sh
-   git push render main
-   ```
-2. Migrate Database:
-   - Run migration command via Render dashboard or SSH.
-
-### Netlify (Frontend):
-- Ensure CORS settings are properly configured in the backend.
 
 ## CORS Configuration
 Modify `config/initializers/cors.rb` to allow requests from the frontend domain:

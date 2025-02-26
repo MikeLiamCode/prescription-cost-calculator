@@ -48,7 +48,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_220004) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
+  
   add_foreign_key "dosages", "medications"
   add_foreign_key "prescription_medications", "dosages"
   add_foreign_key "prescription_medications", "medications"
