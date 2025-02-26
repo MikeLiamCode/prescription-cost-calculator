@@ -1,20 +1,22 @@
-import SingleDosage from '../components/SingleDosage'
+import SingleDosage from "../components/SingleDosage";
 
-export default function DosageList(props) {
-	return (
-		<div className="mt-2">
-			<h5 className="mb-2">Select a Dosage for {props.medicine.name}</h5>
-			<div className="d-flex flex-wrap gap-2 justify-content-center d-flex mb-5">
-				{props.medicine.dosages.map((dosage) => (
-					<SingleDosage 
-						dosage={dosage}
-						medicine={props.medicine}
-						selectedMedicines={props.selectedMedicines}
-						handleDosageSelect={props.handleDosageSelect}
-						handleDurationChange={props.handleDurationChange}
-					/>
-				))}
-			</div>
-		</div>
-	)
+export default function DosageList({ medicine, selectedMedicines, setSelectedMedicines }) {
+  return (
+    <div className="mt-2">
+      <h5 className="mb-2">
+        <span className="text-danger h3">*</span> Select a Dosage for {medicine.name}
+      </h5>
+      <div className="d-flex flex-wrap gap-2 justify-content-center mb-5">
+        {medicine.dosages.map((dosage) => (
+          <SingleDosage
+            key={dosage.id} // Ensure unique key
+            dosage={dosage}
+            medicine={medicine}
+            selectedMedicines={selectedMedicines}
+            setSelectedMedicines={setSelectedMedicines}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }

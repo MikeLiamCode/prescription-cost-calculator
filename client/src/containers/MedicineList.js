@@ -1,79 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { getMedicines, calculateCost } from "../api";
 import Navbar from "../components/Navbar";
 import Medications from "../components/Medications";
+import Prescription from "../components/Prescription";
 
 const MedicineList = () => {
   const [medicines, setMedicines] = useState([]);
   const [selectedMedicines, setSelectedMedicines] = useState({});
   const [budget, setBudget] = useState(100);
+  const [result, setResult] = useState(null);
+
+  const fetchMedicines = async () => {
+    const data = await getMedicines();
+    setMedicines(data);
+  };
 
   useEffect(() => {
-    const fetchMedicines = async () => {
-      const _medicines = await getMedicines();
-      setMedicines(_medicines);
-    };
     fetchMedicines();
   }, []);
 
-  async function calculateBill() {
-    await calculateCost(selectedMedicines, budget);
-  }
+  const calculateBill = useCallback(async () => {
+    const res = await calculateCost(selectedMedicines, budget);
+    setResult(res);
+  }, [selectedMedicines, budget]);
 
-  const handleMedicineToggle = (id) => {
-    setSelectedMedicines((prev) => {
-      const newSelection = { ...prev };
-      if (newSelection[id]) {
-        delete newSelection[id];
-      } else {
-        newSelection[id] = { dosageId: null, duration: 0 };
-      }
-      return newSelection;
-    });
-  };
-
-  const handleDosageSelect = (medicineId, dosageId, defaultDuration) => {
-    setSelectedMedicines((prev) => ({
-      ...prev,
-      [medicineId]: { dosageId, duration: defaultDuration },
-    }));
-  };
-
-  const handleBudgetChange = (e) => {
-    const value = e.target.value.replace(/\D/, "");
-    setBudget(value);
-  };
-
-  const handleDurationChange = (medicineId, e) => {
-    const value = e.target.value.replace(/\D/, "");
-    setSelectedMedicines((prev) => ({
-      ...prev,
-      [medicineId]: { ...prev[medicineId], duration: value || 1 },
-    }));
-  };
+  const hasSelectedMedicines = Object.keys(selectedMedicines).length > 0;
+  const isCalculateDisabled = Object.values(selectedMedicines).some(med => !med.dosageId);
 
   return (
     <div>
-      <Navbar 
-        budget={budget}
-        handleBudgetChange={handleBudgetChange}
-      />
+      <Navbar medicines={medicines} budget={budget} setBudget={setBudget} />
 
       <Medications
         medicines={medicines}
         selectedMedicines={selectedMedicines}
-        handleMedicineToggle={handleMedicineToggle}
-        handleDosageSelect={handleDosageSelect}
-        handleDurationChange={handleDurationChange}
+        setSelectedMedicines={setSelectedMedicines}
       />
-      
-      {Object.keys(selectedMedicines).length > 0 && (
+
+      {hasSelectedMedicines && (
         <div className="mt-4">
-          <button className="btn btn-primary" onClick={calculateBill}>
+          <button className="btn btn-primary" onClick={calculateBill} disabled={isCalculateDisabled}>
             Calculate Bill
           </button>
         </div>
       )}
+
+      <Prescription result={result} />
     </div>
   );
 };

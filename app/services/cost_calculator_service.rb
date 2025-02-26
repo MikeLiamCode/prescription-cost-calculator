@@ -10,10 +10,10 @@ class CostCalculatorService
     process_medications
     generate_suggestion if @total_cost > @budget
     {
+      is_discounted: @discount_needed,
       total_cost: @total_cost.to_f.round(2),
-      budget: @budget,
       is_valid: @total_cost <= @budget,
-      medicince_details: @medication_costs.map do |medication|
+      medicine_details: @medication_costs.map do |medication|
         {
           name: medication[:medication],
           unit_price: medication[:unit_price],
@@ -34,7 +34,8 @@ class CostCalculatorService
 
       quantity = dosage.frequency_multiplier * details[:duration].to_i
       cost = medication.unit_price * quantity
-      cost *= 0.9 if details[:duration].to_i >= 30
+      @discount_needed = details[:duration].to_i >= 30
+      cost *= 0.9 if @discount_needed
       @total_cost += cost
       @medication_costs << {
         medication: medication.name,

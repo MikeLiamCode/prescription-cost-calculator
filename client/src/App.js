@@ -2,8 +2,8 @@ import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import MedicineList from './containers/MedicineList'
-import "bootstrap/dist/css/bootstrap.min.css";
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <Routes>
-            <Route path="/medications" element={<MedicineList />} />
+            <Route path="/" element={<MedicineList />} />
           </Routes>
         </header>
       </div>
