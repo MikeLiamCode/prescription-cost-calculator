@@ -1,0 +1,66 @@
+[
+    {
+      "name": "Metformin",
+      "unit_price": 5.0,
+      "dosages": [
+        { "dosage_amount": "500 mg", "frequency": "once_daily", "default_duration": 30 },
+        { "dosage_amount": "500 mg", "frequency": "twice_daily", "default_duration": 30 },
+        { "dosage_amount": "1000 mg", "frequency": "once_daily", "default_duration": 30 }
+      ]
+    },
+    {
+      "name": "Phentermine",
+      "unit_price": 15.0,
+      "dosages": [
+        { "dosage_amount": "15 mg", "frequency": "once_daily", "default_duration": 14 },
+        { "dosage_amount": "30 mg", "frequency": "once_daily", "default_duration": 14 },
+        { "dosage_amount": "37.5 mg", "frequency": "once_daily", "default_duration": 14 }
+      ]
+    },
+    {
+      "name": "Naltrexone",
+      "unit_price": 12.0,
+      "dosages": [
+        { "dosage_amount": "25 mg", "frequency": "once_daily", "default_duration": 7 },
+        { "dosage_amount": "50 mg", "frequency": "once_daily", "default_duration": 28 },
+        { "dosage_amount": "50 mg", "frequency": "twice_daily", "default_duration": 28 }
+      ]
+    },
+    {
+      "name": "Wellbutrin",
+      "unit_price": 10.0,
+      "dosages": [
+        { "dosage_amount": "100 mg", "frequency": "twice_daily", "default_duration": 14 },
+        { "dosage_amount": "150 mg", "frequency": "once_daily", "default_duration": 14 },
+        { "dosage_amount": "150 mg", "frequency": "twice_daily", "default_duration": 14 }
+      ]
+    },
+    {
+      "name": "Topiramate",
+      "unit_price": 8.0,
+      "dosages": [
+        { "dosage_amount": "25 mg", "frequency": "once_daily", "default_duration": 30 },
+        { "dosage_amount": "25 mg", "frequency": "twice_daily", "default_duration": 30 },
+        { "dosage_amount": "50 mg", "frequency": "twice_daily", "default_duration": 30 }
+      ]
+    },
+    {
+      "name": "Ozempic",
+      "unit_price": 40.0,
+      "dosages": [
+        { "dosage_amount": "0.25 mg", "frequency": "once_week", "default_duration": 28 },
+        { "dosage_amount": "0.5 mg", "frequency": "once_week", "default_duration": 28 },
+        { "dosage_amount": "1 mg", "frequency": "once_week", "default_duration": 28 }
+      ]
+    },
+    {
+      "name": "Bupropion",
+      "unit_price": 40.0,
+      "dosages": [
+        { "dosage_amount": "75 mg", "frequency": "once_daily", "default_duration": 21 },
+        { "dosage_amount": "150 mg", "frequency": "once_daily", "default_duration": 21 },
+        { "dosage_amount": "150 mg", "frequency": "twice_daily", "default_duration": 21 }
+      ]
+    }
+  ]
+  

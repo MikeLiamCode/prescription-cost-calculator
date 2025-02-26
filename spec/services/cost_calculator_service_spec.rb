@@ -19,14 +19,12 @@ RSpec.describe CostCalculatorService do
     subject { described_class.new(medications_params, budget).calculate }
 
     it 'calculates total cost correctly' do
-      result = subject
-      expect(result[:total_cost]).to be_a(Numeric)
-      expect(result[:total_cost]).to be > 0
+      expect(subject[:total_cost]).to be_a(Numeric)
+      expect(subject[:total_cost]).to be > 0
     end
 
     it 'validates if the total cost is within budget' do
-      result = subject
-      expect(result[:is_valid]).to eq(result[:total_cost] <= budget)
+      expect(subject[:is_valid]).to eq(subject[:total_cost] <= budget)
     end
 
     it 'suggests reduction when over budget' do

@@ -9,14 +9,14 @@ class MedicationsController < ApplicationController
   def calculate_cost
     result = CostCalculatorService.new(@medications, @budget).calculate
     render json: result, status: :ok
-  rescue ArgumentError => e
-    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   private
 
   def fetch_params
-    @medications = params[:medication] || {}
-    @budget = params[:budget].to_f
+    @medications = params.require(:medication).permit!
+    @budget = params.require(:budget)
+  rescue ActionController::ParameterMissing => e
+    render json: { error: e.message }, status: :bad_request
   end
 end

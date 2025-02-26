@@ -52,8 +52,7 @@ RSpec.describe MedicationsController, type: :controller do
       expect(response).to have_http_status(:success)
 
       json_response = JSON.parse(response.body)
-      expect(json_response['total_cost']).to be_a(Numeric)
-      expect(json_response['budget']).to eq(500)
+      expect(json_response['total_cost']).to eq("280.0")
       expect(json_response['is_valid']).to be_in([true, false])
     end
 
@@ -67,14 +66,14 @@ RSpec.describe MedicationsController, type: :controller do
       end
     end
 
-    context 'when dosage ID is missing' do
-      before { valid_params[:medication][medication.id.to_s].delete(:dosageId) }
+    context 'when budget is missing' do
+      before { valid_params.delete(:budget) }
 
-      it 'returns an error response' do
+      it 'returns a bad request error' do
         subject
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:bad_request)
         json_response = JSON.parse(response.body)
-        expect(json_response['error']).to eq('Dosage ID is required')
+        expect(json_response['error']).to eq("param is missing or the value is empty or invalid: budget")
       end
     end
   end

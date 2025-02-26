@@ -1,6 +1,8 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem 'activerecord-import'
+
 gem "rails", "~> 8.0.1"
 gem "pg", ">= 1.1", "< 2.0"
 # Use the Puma web server [https://github.com/puma/puma]

@@ -7,12 +7,11 @@ class CostCalculatorService
     @budget = budget.to_f
     @total_cost = 0
     @medication_costs = []
-    @discount_needed = false
   end
 
   def calculate
     process_medications
-    generate_suggestion if over_budget?
+    generate_suggestion unless within_budget?
     build_response
   end
 
@@ -42,12 +41,10 @@ class CostCalculatorService
   end
 
   def apply_discount(cost, duration)
-    if duration.to_i >= DISCOUNT_THRESHOLD
-      @discount_needed = true
-      cost * DISCOUNT_RATE
-    else
-      cost
-    end
+    return cost if duration.to_i < DISCOUNT_THRESHOLD
+
+    @discount_needed = true
+    cost * DISCOUNT_RATE
   end
 
   def build_medication_details(medication, dosage, quantity, cost)
@@ -65,15 +62,15 @@ class CostCalculatorService
     @suggestion = "Consider reducing the duration of #{highest_cost_med[:medication]} (#{highest_cost_med[:dosage]}) to stay within budget."
   end
 
-  def over_budget?
-    @total_cost > @budget
+  def within_budget?
+    @total_cost <= @budget
   end
 
   def build_response
     {
       is_discounted: @discount_needed,
       total_cost: @total_cost.round(2),
-      is_valid: !over_budget?,
+      is_valid: within_budget?,
       medicine_details: @medication_costs.map { |m| m.slice(:name, :unit_price, :quantity) },
       suggestion: @suggestion
     }
