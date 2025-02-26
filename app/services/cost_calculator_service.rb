@@ -13,6 +13,13 @@ class CostCalculatorService
       total_cost: @total_cost.to_f.round(2),
       budget: @budget,
       is_valid: @total_cost <= @budget,
+      medicince_details: @medication_costs.map do |medication|
+        {
+          name: medication[:medication],
+          unit_price: medication[:unit_price],
+          quantity: medication[:quantity]
+        }
+      end,
       suggestion: @suggestion
     }
   end
@@ -25,12 +32,16 @@ class CostCalculatorService
       dosage = Dosage.find_by(id: details[:dosageId])
       next unless medication && dosage
 
-      cost = medication.unit_price * dosage.frequency_multiplier * details[:duration].to_i
+      quantity = dosage.frequency_multiplier * details[:duration].to_i
+      cost = medication.unit_price * quantity
+      cost *= 0.9 if details[:duration].to_i >= 30
       @total_cost += cost
       @medication_costs << {
         medication: medication.name,
         dosage: dosage.dosage_amount,
-        cost: cost
+        cost: cost,
+        quantity: quantity,
+        unit_price: medication.unit_price
       }
     end
   end
